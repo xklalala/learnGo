@@ -1,0 +1,22 @@
+//生成随机数
+package main
+import (
+	"math/rand"
+	"time"
+	"fmt"
+)
+
+func main(){
+	fmt.Println()
+	rand.Seed(time.Now().Unix())
+	n := rand.Intn(100) + 1
+	fmt.Println(n)
+}
+
+捕获异常，
+defer func(){
+		err := recover()
+		if err != nil{
+			fmt.Println(err)
+		}
+	}()
