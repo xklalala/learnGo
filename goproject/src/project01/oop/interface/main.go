@@ -124,7 +124,7 @@ func TypeJudge(item ...interface{}){
 			case Hero:
 				fmt.Printf("参数  %d 的类型是Hero 值是%v\n", i, x)
 			case *Hero:
-				fmt.Printf("参数  %d 的类型是&Hero 值是%v\n", i, x)
+				fmt.Printf("参数  %d 的类型是Hero 值是%v\n", i, x)
 			default:
 				fmt.Printf("参数  %d 的类型未知 值是%v\n", i,x)
 		}
