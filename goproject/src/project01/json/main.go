@@ -10,7 +10,6 @@ type Monster struct{
 	Sal			float64
 	Skill		string
 }
-
 //序列号结构体
 func learn1(){
 	moster := Monster{
@@ -117,6 +116,9 @@ func learn4(){
 	}
 	fmt.Println(a)
 }
+
+
+
 
 func main(){
 	// learn2()

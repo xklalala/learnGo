@@ -50,6 +50,25 @@ func learn1(){
 }
 
 
+//连接池
+var pool *redis.Pool
+
+func init(){
+	pool = &redis.Pool{
+		MaxIdle:8,//最大空闲数
+		MaxActive:0,//表示数据库的最大连接数，0表示没有限制
+		IdleTimeout:100,//最大空闲时间
+		Dial:func()(redis.Conn, err){//初始化连接的代码
+			return redis.Dial("tcp", "localhost:6379")
+		},
+	}
+}
+func learn2(){
+	conn := pool.Get()
+	defer conn.Close()
+}
+
 func main(){
+	pool.Close()//关闭连接池 
 	learn1()
 }

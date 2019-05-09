@@ -69,3 +69,9 @@ srem emails abc@qq.com
 smembers 取出所有值
 sismember 判断值是否是成员
 srem    删除指定值
+
+
+redis链接池
+1.事先初始化一定数量的连接， 放入到连接池
+2.当go需要操作redis时， 从redis连接池中取出连接
+3.这样可以节省临时获取redis连接的时间，从而提高效率
