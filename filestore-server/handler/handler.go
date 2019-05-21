@@ -68,7 +68,7 @@ func UploadSucHandler (w http.ResponseWriter, r *http.Request){
 //获取文件元信息
 func GetFileMetaHandler(w http.ResponseWriter, r *http.Request){
 	r.ParseForm()
-	filehash := r.Form["filehash"][0]
+	filehash := r.Form.Get("filehash")
 	fMeta := meta.GetFileMeta(filehash)
 	data, err := json.Marshal(fMeta)
 	if err != nil{
@@ -101,3 +101,44 @@ func DownloadHandler(w http.ResponseWriter, r * http.Request){
 	w.Header().Set("Content-disposition", fmt.Sprintf("attachment; filename=%s", fm.FileName))
 	w.Write(data)
 }
+
+//更新元信息接口
+func FileMetaUpdateHandler(w http.ResponseWriter, r *http.Request){
+	r.ParseForm()
+	opType   := r.Form.Get("op")
+	fileSha1 := r.Form.Get("filehash")
+	newFileName := r.Form.Get("filename")
+
+	if opType != "0"{//修改
+		w.WriteHeader(http.StatusForbidden)
+		return
+	}
+	if r.Method != "POST"{
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		return
+	}
+
+	curFileMeta := meta.GetFileMeta(fileSha1)
+	curFileMeta.FileName = newFileName
+	meta.UpdateFileMeta(curFileMeta)
+
+	data, err := json.Marshal(curFileMeta)
+	if err != nil{
+		w.WriteHeader(http.StatusInternalServerError)
+	}
+	w.WriteHeader(http.StatusOK)
+	w.Write(data)
+}
+
+//删除
+func FileDeleteHandler(w http.ResponseWriter, r *http.Request){
+	r.ParseForm()
+	fileShal := r.Form.Get("filehash")
+	fmt.Println(fileShal)
+	fMeta := meta.GetFileMeta(fileShal)
+	os.Remove(fMeta.Location)
+	fmt.Println(fMeta)
+	meta.RemoveFileMeta(fileShal)
+	w.WriteHeader(http.StatusOK)
+}
+
